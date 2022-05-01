@@ -10,10 +10,6 @@ let BASE_COLOR =   "white";
 let BOT_COLOR =   "green";
 let GARBAGE_COLOR = "red";
 
-function runBot (state, bot, memory) {
-
-}
-
 function renderField (field) {
 
     let view = document.querySelector(".view");  
@@ -54,14 +50,48 @@ let garbage_list = Field.createField(
 
 let f1 = new Field(DIMENSIONS, garbage_list);
 
-document.querySelectorAll(".in").forEach(e => e.addEventListener("click", () => {
-    if (e.innerText == "N") f1 = f1.takeAction([0, -1]);
-    if (e.innerText == "S") f1 = f1.takeAction([0, 1]);
-    if (e.innerText == "E") f1 = f1.takeAction([1, 0]);
-    if (e.innerText == "W") f1 = f1.takeAction([-1, 0]);
-    if (e.innerText == "C") f1 = f1.takeAction([0, 0]);
+// document.querySelectorAll(".in").forEach(e => e.addEventListener("click", () => {
+//     if (e.innerText == "N") f1 = f1.takeAction([0, -1]);
+//     if (e.innerText == "S") f1 = f1.takeAction([0, 1]);
+//     if (e.innerText == "E") f1 = f1.takeAction([1, 0]);
+//     if (e.innerText == "W") f1 = f1.takeAction([-1, 0]);
+//     if (e.innerText == "C") f1 = f1.takeAction([0, 0]);
     
-    renderField(f1);
-}))
+//     renderField(f1);
+// }))
 
-renderField(f1)
+function simpleReactive(field, memory) {
+    let [x, y] = field.getPlace();
+
+    if (field.isDirty([x, y])) {
+        //clean current space
+        return {direction:[0, 0], memory};
+    } 
+
+    if ((x + 1) >= DIMENSIONS[0] || (x <= 0 && y != 0)) {
+        //rotates the queue
+        memory.push(memory.shift());  
+    }
+
+    return {direction: memory[0], memory};
+}
+
+function runBot (field, bot, memory) {
+    let INTERVAL = .05 * 1000;
+    let round = 0;
+
+    let simulation = setInterval(() => {
+        renderField(field);
+
+        let action = bot(field, memory);
+        field = field.takeAction(action.direction);
+        memory = action.memory;
+
+        if (!field.getGarbage().length) clearInterval(simulation);
+
+    }, INTERVAL);
+}
+
+let memory = [[1, 0], [0, 1], [-1, 0], [0, 1]];
+
+runBot(f1, simpleReactive, memory);

@@ -18,6 +18,10 @@ export default class Field {
     getGarbage() {
         return [...this.garbage];
     }
+
+    isDirty(position) {
+        return this.garbage.some(e => Coordinate.compare(e, position));
+    }
     
     takeAction(movement) {
         //colect carbage
