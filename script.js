@@ -1,16 +1,8 @@
 class Coordinate {
-    constructor (_x, _y) {
-        this.x = _x;
-        this.y = _y; 
-    }
-
-    getCoordinate() {
-        return [this.x, this.y];
-    }
-
-    setCoordinate(_x, _y) {
-        this.x = _x;
-        this.y = _y;
+    static sum (c1, c2) {
+        let [x1, y1] = c1;
+        let [x2, y2] = c2;
+        return [x1 + x2, y1 + y2];
     }
 
     static compare(c1, c2) {
@@ -30,17 +22,23 @@ class Coordinate {
 }
 
 class Field {
-    constructor(garbage) {
-        this.place;   // current possition
-        this.field;   //matrix
-        this.garbage; // list of garbage coordinates
+    constructor(_garbage, _place = [0, 0]) {
+        this.place = _place;   // current possition
+        this.garbage = _garbage; // list of garbage coordinates
     }
 
     takeAction(movement) {
         //colect carbage
-        if (Coordinate.compare(movement, [0,0])) {
-            console.log("success")
+        let collect = [0, 0];
+        let garbage = this.garbage;
+        let newCoordinate = Coordinate.sum(this.place, movement);
+
+        if (Coordinate.compare(movement, collect)) {
+            //remove garbage in the current position
+            garbage = this.garbage.filter(e => !Coordinate.compare(e, this.place));
         }
+        
+        return new Field(garbage, newCoordinate);
     }
 
     static createField(width, height, numberOfGarbage) {
@@ -62,5 +60,7 @@ function runBot (state, bot, memory) {
 
 }
 
-let c1 = new Coordinate(1, 2);
-console.log(Field.createField(10, 10, 10));
+let garbage_list = Field.createField(10,10,10);
+let f1 = new Field(garbage_list);
+
+f1.takeAction([0,0]);
