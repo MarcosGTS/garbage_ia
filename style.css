@@ -1,0 +1,8 @@
+* {
+    box-sizing: border-box;
+}
+.view {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+}
