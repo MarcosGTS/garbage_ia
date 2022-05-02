@@ -62,22 +62,48 @@ let f1 = new Field(DIMENSIONS, garbage_list);
 
 function simpleReactive(field, memory) {
     let [x, y] = field.getPlace();
+    
+    let lEdge = 0;
+    let rEdge = field.getDimensions()[0] - 1;
+
+    if (field.isDirty([x, y])) return {direction:[0, 0], memory};
+    
+    if (x == rEdge && y % 2 == 0) return {direction: [0, 1], memory};
+    if (x == lEdge && y % 2 == 1) return {direction: [0, 1], memory};
+    
+    if (y % 2 == 0) return {direction: [1, 0], memory};
+    if (y % 2 == 1) return {direction: [-1, 0], memory};
+
+    //error case
+    return {direction: null, memory};
+}
+
+
+function basedOnStates(field, memory) {
+    let [x, y] = field.getPlace();
+    
+    let lEdge = 0;
+    let rEdge = field.getDimensions()[0] - 1;
 
     if (field.isDirty([x, y])) {
-        //clean current space
+        if (!memory) memory = [];
+        memory.push([x, y]);
         return {direction:[0, 0], memory};
-    } 
-
-    if ((x + 1) >= DIMENSIONS[0] || (x <= 0 && y != 0)) {
-        //rotates the queue
-        memory.push(memory.shift());  
     }
+    
+    
+    if (x == rEdge && y % 2 == 0) return {direction: [0, 1], memory};
+    if (x == lEdge && y % 2 == 1) return {direction: [0, 1], memory};
+    
+    if (y % 2 == 0) return {direction: [1, 0], memory};
+    if (y % 2 == 1) return {direction: [-1, 0], memory};
 
-    return {direction: memory[0], memory};
+    //error case
+    return {direction: null, memory};
 }
 
 function runBot (field, bot, memory) {
-    let INTERVAL = .05 * 1000;
+    let INTERVAL = .1 * 1000;
     let round = 0;
 
     let simulation = setInterval(() => {
@@ -87,11 +113,12 @@ function runBot (field, bot, memory) {
         field = field.takeAction(action.direction);
         memory = action.memory;
 
-        if (!field.getGarbage().length) clearInterval(simulation);
+        if (!field.getGarbage().length) {
+            clearInterval(simulation);
+            console.log(memory);
+        }
 
     }, INTERVAL);
 }
 
-let memory = [[1, 0], [0, 1], [-1, 0], [0, 1]];
-
-runBot(f1, simpleReactive, memory);
+runBot(f1, basedOnStates, []);
