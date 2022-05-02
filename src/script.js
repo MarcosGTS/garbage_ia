@@ -102,6 +102,37 @@ function basedOnStates(field, memory) {
     return {direction: null, memory};
 }
 
+function goalBasedReactive(field, memory) {
+    
+    function getShortestDistance(position, garbage) {
+        let shortestDist = garbage.reduce((min, garbPosition) => {
+        
+            let minDistance = Coordinate.distanceOfPoints(position, min);
+            let newDistance = Coordinate.distanceOfPoints(position, garbPosition);
+
+            return (minDistance > newDistance) ? garbPosition: min;
+        }, [1000, 1000]);
+
+        return shortestDist;
+    }
+
+    let [x, y] = field.getPlace();
+    let garbageList = field.getGarbage();
+
+    if (field.isDirty([x, y])) {
+        return {direction: [0, 0], memory:null};
+    }
+
+    let nearestGarb = memory || getShortestDistance([x, y], garbageList);
+
+    if (x < nearestGarb[0]) return {direction: [1, 0], nearestGarb};
+    if (x > nearestGarb[0]) return {direction: [-1, 0], nearestGarb};
+    if (y < nearestGarb[1]) return {direction: [0, 1], nearestGarb};
+    if (y > nearestGarb[1]) return {direction: [0, -1], nearestGarb};
+
+    return {direction: [0, 0], memory:null};
+}
+
 function runBot (field, bot, memory) {
     let INTERVAL = .1 * 1000;
     let round = 0;
@@ -121,4 +152,5 @@ function runBot (field, bot, memory) {
     }, INTERVAL);
 }
 
-runBot(f1, basedOnStates, []);
+
+runBot(f1, goalBasedReactive, null);
