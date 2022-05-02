@@ -1,4 +1,5 @@
 import Coordinate from "./Coordinate.js";
+import Garbage from "./Garbage.js";
 
 export default class Field {
     constructor(_dimensions, _garbage, _place = [0, 0]) {
@@ -15,12 +16,16 @@ export default class Field {
         return this.dimensions;
     }
 
-    getGarbage() {
+    getGarbageList() {
         return [...this.garbage];
     }
 
+    getGarbage(position) {
+        return this.garbage.find(e => Coordinate.compare(position, e.getPosition()));
+    }
+
     isDirty(position) {
-        return this.garbage.some(e => Coordinate.compare(e, position));
+        return this.garbage.some(e => Coordinate.compare(position, e.getPosition()));
     }
     
     takeAction(movement) {
@@ -31,20 +36,28 @@ export default class Field {
 
         if (Coordinate.compare(movement, collect)) {
             //remove garbage in the current position
-            garbage = this.garbage.filter(e => !Coordinate.compare(e, this.place));
+            garbage = this.garbage.filter(garb => 
+                !Coordinate.compare(garb.getPosition(), this.place)
+            );
         }
         
         return new Field(this.dimensions, garbage, newCoordinate);
     }
 
-    static createField(width, height, numberOfGarbage) {
+    static createField(width, height, numberOfGarbage, weights = [10, 20]) {
         let garbage = [];
 
         while (garbage.length < numberOfGarbage) {
-            let newGarbage = Coordinate.randomCoordinate(width, height);
-
+            let type = Math.floor(garbage.length / (numberOfGarbage / weights.length))
+            let garbCoordinate = Coordinate.randomCoordinate(width, height);
+            let newGarbage = new Garbage(garbCoordinate, weights[type]);
+            
             // Coordinate already selected
-            if (garbage.some(e => Coordinate.compare(e, newGarbage))) continue;
+            if (garbage.find(crrGarb => Coordinate.compare(
+                crrGarb.getPosition(), 
+                newGarbage.getPosition()
+            ))) continue;
+
             garbage.push(newGarbage);
         }
 
