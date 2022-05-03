@@ -1,0 +1,44 @@
+#Medicoes dos tempos de execucao de cada bot
+
+*CONDICOES DE MEDICAO 
+
+O posicionamento do lixo no campo e gerado de forma aleatoria 
+A ferramenta utilizada para medir o tempo foi uma API do javascript (performance.now())
+O codigo nao estava renderizando o estado da campo
+Browser utilizado: Brave 
+Processador: Intel(R) Pentium(R) CPU B980 @ 2.40GHz
+Memoria (RAM): 6GB 1333Mhz DDR3
+
+*MEDICOES (em ms)
+
+- Reativo simples
+12.50
+11.29
+10.60
+9.29
+9.59
+media: 10.654
+
+- Reativo baseado em estado
+12.19
+9.90
+12.40
+11
+12.10
+media: 11.518
+
+- Reativo baseado em objetivo
+7.89
+8.29
+6.90
+5.80
+5.5
+media: 6.876
+
+- Reativo baseado em utilidade
+10.20
+8.59
+8.5
+8.20
+5.70
+media: 8.238

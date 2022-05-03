@@ -59,10 +59,10 @@ function changeBot() {
     let {selectedIndex}= this.options;
     let selectedItem = this.options[selectedIndex].value;
 
-    if (selectedItem == "sr") SELECTED_BOT = simpleReactive
-    if (selectedItem == "sbr") SELECTED_BOT = statesBasedReactive
-    if (selectedItem == "gbr") SELECTED_BOT = goalBasedReactive
-    if (selectedItem == "ubr") SELECTED_BOT = utilityBasedReactive
+    if (selectedItem == "sr")  SELECTED_BOT = simpleReactive;
+    if (selectedItem == "sbr") SELECTED_BOT = statesBasedReactive;
+    if (selectedItem == "gbr") SELECTED_BOT = goalBasedReactive;
+    if (selectedItem == "ubr") SELECTED_BOT = utilityBasedReactive;
 }
 
 function startGame(bot) {
@@ -83,20 +83,28 @@ function runBot (field, bot, renderFunc = console.log) {
     let INTERVAL = .1 * 1000;
     let memory = null;
 
-    clearInterval(SIMULATION_LOOP);
-    SIMULATION_LOOP = setInterval(() => {
-        renderFunc(field);
+    let start = performance.now();
+
+    // clearInterval(SIMULATION_LOOP);
+    // SIMULATION_LOOP = setInterval(() => {
+    while (true) {
+        //renderFunc(field);
 
         let action = bot(field, memory);
         field = field.takeAction(action.direction);
         memory = action.memory;
 
         if (!field.getGarbageList().length) {
-            console.log(memory);
-            clearInterval(SIMULATION_LOOP); 
+            break;
+            // console.log(memory);
+            // clearInterval(SIMULATION_LOOP); 
         }
-    }, INTERVAL);
-}
+    }
+    // }, INTERVAL);
+    
+    let final = performance.now() - start;
 
+    console.log(final);
+}
 
 renderField(new Field(DIMENSIONS,[]))
