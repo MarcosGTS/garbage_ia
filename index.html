@@ -9,12 +9,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button class="in">N</button>
-    <button class="in">W</button>
-    <button class="in">E</button>
-    <button class="in">S</button>
-    
-    <button class="in">C</button>
+    <button id="play">Play</button>
+
+    <select id="bots">
+        <option value="sr" selected>Simple reactive</option>
+        <option value="sbr">State based reactive</option>
+        <option value="gbr">Goal based reative</option>
+        <option value="ubr">Utility based reactive</option>
+    </select>
 
     <div class="view">
 
