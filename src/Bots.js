@@ -65,10 +65,10 @@ export function goalBasedReactive(field, memory) {
 
     let nearestGarb = memory || getShortestDistance([x, y], garbagePosList);
 
-    if (x < nearestGarb[0]) return {direction: [1, 0], nearestGarb};
-    if (x > nearestGarb[0]) return {direction: [-1, 0], nearestGarb};
-    if (y < nearestGarb[1]) return {direction: [0, 1], nearestGarb};
-    if (y > nearestGarb[1]) return {direction: [0, -1], nearestGarb};
+    if (x < nearestGarb[0]) return {direction: [1, 0], memory: nearestGarb};
+    if (x > nearestGarb[0]) return {direction: [-1, 0], memory: nearestGarb};
+    if (y < nearestGarb[1]) return {direction: [0, 1], memory: nearestGarb};
+    if (y > nearestGarb[1]) return {direction: [0, -1], memory: nearestGarb};
 
     return {direction: [0, 0], memory:null};
 }
@@ -84,7 +84,7 @@ export function utilityBasedReactive(field, memory) {
             if (min.getWeight() < garb.getWeight()) return garb
             return (minDistance > newDistance) ? garb : min;
         });
-    
+
         return shortestDist;
     }
 
@@ -95,10 +95,10 @@ export function utilityBasedReactive(field, memory) {
     
     let nearestGarb = memory || getShortestDistance([x, y], garbagePosList);
     
-    if (x < nearestGarb.getPosition()[0]) return {direction: [1, 0], nearestGarb};
-    if (x > nearestGarb.getPosition()[0]) return {direction: [-1, 0], nearestGarb};
-    if (y < nearestGarb.getPosition()[1]) return {direction: [0, 1], nearestGarb};
-    if (y > nearestGarb.getPosition()[1]) return {direction: [0, -1], nearestGarb};
+    if (x < nearestGarb.getPosition()[0]) return {direction: [1, 0], memory: nearestGarb};
+    if (x > nearestGarb.getPosition()[0]) return {direction: [-1, 0], memory: nearestGarb};
+    if (y < nearestGarb.getPosition()[1]) return {direction: [0, 1], memory: nearestGarb};
+    if (y > nearestGarb.getPosition()[1]) return {direction: [0, -1], memory: nearestGarb};
 
     return {direction: [0, 0], memory:null};
 }

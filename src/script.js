@@ -93,7 +93,10 @@ function runBot (field, bot, renderFunc = console.log) {
 
         if (!field.getGarbageList().length) {
             console.log(memory);
-            clearInterval(simulation); 
+            clearInterval(SIMULATION_LOOP); 
         }
     }, INTERVAL);
 }
+
+
+renderField(new Field(DIMENSIONS,[]))

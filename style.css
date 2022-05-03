@@ -1,8 +1,28 @@
 * {
     box-sizing: border-box;
 }
+
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    background-color: rgb(226, 236, 236);
+}
+
 .view {
     width: 500px;
     display: flex;
     flex-wrap: wrap;
+
+    margin: 0px auto;
+}
+
+.menu {
+    width: 500px;
+    padding: 5px 15px;
+
+    background-color: gray;
+    margin: 0px auto;
 }
