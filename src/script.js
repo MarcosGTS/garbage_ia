@@ -83,28 +83,21 @@ function runBot (field, bot, renderFunc = console.log) {
     let INTERVAL = .1 * 1000;
     let memory = null;
 
-    let start = performance.now();
-
-    // clearInterval(SIMULATION_LOOP);
-    // SIMULATION_LOOP = setInterval(() => {
-    while (true) {
-        //renderFunc(field);
+    clearInterval(SIMULATION_LOOP);
+    SIMULATION_LOOP = setInterval(() => {
+   
+        renderFunc(field);
 
         let action = bot(field, memory);
         field = field.takeAction(action.direction);
         memory = action.memory;
 
         if (!field.getGarbageList().length) {
-            break;
-            // console.log(memory);
-            // clearInterval(SIMULATION_LOOP); 
+            console.log(memory);
+            clearInterval(SIMULATION_LOOP); 
         }
-    }
-    // }, INTERVAL);
-    
-    let final = performance.now() - start;
 
-    console.log(final);
+    }, INTERVAL);
 }
 
 renderField(new Field(DIMENSIONS,[]))

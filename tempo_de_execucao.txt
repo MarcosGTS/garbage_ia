@@ -1,6 +1,9 @@
 #Medicoes dos tempos de execucao de cada bot
 
+
 *CONDICOES DE MEDICAO 
+Para  evitar erros de Cross origin, executar o codigo em um servidor local.
+Existe um plugin no vsCode chamado Live Serve capaz de suprir essa necessidade.
 
 O posicionamento do lixo no campo e gerado de forma aleatoria 
 A ferramenta utilizada para medir o tempo foi uma API do javascript (performance.now())
